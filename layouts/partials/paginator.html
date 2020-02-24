@@ -1,25 +1,10 @@
 {{ with .Paginator }}
-<script>
-function pjax_οnclickG(vvc){
-	$.ajax({
-            type:'GET',
-            url:vvc.href,
-            success:function(data){
-				$('#pjax-content').html('');
-				var _content = $(data).find("#pjax-content").html();
-            	$('#pjax-content').html(_content);
-            }
-              	});
-    window.history.pushState({url:vvc.href},null,vvc.href);
-	vvc.href = "#";
-	return false;
-}
-</script>
+
 {{ if gt .TotalPages 10 }}
 <ol class="page-navigator">
     {{ if .HasPrev }}
     <li class="prev">
-        <a href="{{ .Prev.URL | absLangURL }}" nclick="pjax_οnclickG(this);">上一页</a>
+        <a href="{{ .Prev.URL | absLangURL }}">上一页</a>
     </li>
     {{ end }}
 
@@ -54,7 +39,7 @@ function pjax_οnclickG(vvc){
         {{ else }}
         {{ $pager:=index $.Paginator.Pagers (sub . 1) }}
         <li {{ if eq . $.Paginator.PageNumber }} class="current"{{ end }}>
-            <a href="{{ $pager.URL | absLangURL }}" nclick="pjax_οnclickG(this);">{{ $pager.PageNumber }}</a>
+            <a href="{{ $pager.URL | absLangURL }}">{{ $pager.PageNumber }}</a>
         </li>
         {{ end }}
     {{ end }}
@@ -63,7 +48,7 @@ function pjax_οnclickG(vvc){
     
 
     <li class="next">
-        <a href="{{ .Next.URL | absLangURL }}" nclick="pjax_οnclickG(this);">下一页</a>
+        <a href="{{ .Next.URL | absLangURL }}">下一页</a>
     </li>
     {{ end }}
 </ol>
@@ -72,19 +57,19 @@ function pjax_οnclickG(vvc){
 <ol class="page-navigator">
     {{ if .HasPrev }}
     <li class="prev">
-        <a href="{{ .Prev.URL | absLangURL }}" nclick="pjax_οnclickG(this);">上一页</a>
+        <a href="{{ .Prev.URL | absLangURL }}">上一页</a>
     </li>
     {{ end }}
 
     {{ range .Pagers }}
     <li {{ if eq .PageNumber $.Paginator.PageNumber }} class="current"{{ end }}>
-        <a href="{{ .URL | absLangURL }}" nclick="pjax_οnclickG(this);">{{ .PageNumber }}</a>
+        <a href="{{ .URL | absLangURL }}">{{ .PageNumber }}</a>
     </li>
     {{ end }}
 
     {{ if .HasNext }}
     <li class="next">
-        <a href="{{ .Next.URL | absLangURL }}" onclick="pjax_οnclickG(this);">下一页</a>
+        <a href="{{ .Next.URL | absLangURL }}">下一页</a>
     </li>
     {{ end }}
 </ol>

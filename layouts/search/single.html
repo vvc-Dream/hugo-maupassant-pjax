@@ -23,21 +23,6 @@
 
 <script type="text/javascript">
 
-	function pjax_οnclickC(vvc){
-	alert("AAA");
-	$.ajax({
-            type:'GET',
-            url:vvc.href,
-            success:function(data){
-				$('#pjax-content').html('');
-				var _content = $(data).find("#pjax-content").html();
-            	$('#pjax-content').html(_content);
-            }
-              	});
-    window.history.pushState({url:vvc.href},null,vvc.href);
-	vvc.href = "#";
-	}
-
     var getUrlParameter = function getUrlParameter(sParam) {
         var sPageURL = window.location.search.substring(1),
             sURLVariables = sPageURL.split('&'),
@@ -66,10 +51,10 @@
                     var title = item.find("title").text();
                     if (title.toLowerCase().indexOf(q.toLowerCase()) >= 0) {
                         var url = item.find("link").text();
-                        var searchItem = `<article class="post"><header><h1 class="post-title"><a href="` + url + `" onclick="pjax_οnclickC(this);">` + title + `</a></h1></header>`;
+                        var searchItem = `<article class="post"><header><h1 class="post-title"><a href="` + url + `">` + title + `</a></h1></header>`;
                         var pubDate = new Date(item.find("pubDate").text())
                         searchItem += `<date class="post-meta meta-date">` + pubDate.getFullYear() + `年` + (pubDate.getMonth() + 1) + `月` + pubDate.getDate() + `日</date>`;
-                        searchItem += `<div class="post-content">` + item.find("description").text() + `……<p class="readmore"><a href="` + url + `" onclick="pjax_οnclickC(this);">阅读全文</a></p></div></article>`;
+                        searchItem += `<div class="post-content">` + item.find("description").text() + `……<p class="readmore"><a href="` + url + `">阅读全文</a></p></div></article>`;
 
                         $("div.res-cons").append(searchItem);
                     }

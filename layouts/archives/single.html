@@ -7,27 +7,11 @@
         {{ range .Pages }}
         <li>
             <span class="date">{{ .Date.Format "2006/01/02" }}</span>
-            <a href="{{ .Permalink }}" title="{{ .Title }}" onclick="pjax_οnclickB(this);">{{ .Title }}</a>
+            <a href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a>
         </li>
         {{ end }}
     </ul>
     {{ end }}
-
-<script>
-function pjax_οnclickB(vvc){
-	$.ajax({
-            type:'GET',
-            url:vvc.href,
-            success:function(data){
-				$('#pjax-content').html('');
-				var _content = $(data).find("#pjax-content").html();
-            	$('#pjax-content').html(_content);
-            }
-              	});
-	vvc.href = "#";
-    window.history.pushState({url:vvc.href},null,vvc.href);
-}
-</script>
 
 </div>
 </div>

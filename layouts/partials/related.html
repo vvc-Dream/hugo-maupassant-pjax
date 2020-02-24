@@ -4,23 +4,8 @@
     <h2>See Also</h2>
     <ul class="listing">
         {{ range . }}
-        <li><a href="{{ .RelPermalink }}" onclick="pjax_οnclickH(this);">{{ .Title }}</a></li>
+        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
         {{ end }}
     </ul>
 </div>
-<script>
-function pjax_οnclickH(vvc){
-	$.ajax({
-            type:'GET',
-            url:vvc.href,
-            success:function(data){
-				$('#pjax-content').html('');
-				var _content = $(data).find("#pjax-content").html();
-            	$('#pjax-content').html(_content);
-            }
-              	});
-    window.history.pushState({url:vvc.href},null,vvc.href);
-	vvc.href = "#";
-}
-</script>
 {{ end }}

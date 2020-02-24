@@ -107,6 +107,7 @@
         options = $.extend({
             selector: '',
             container: '',
+			_container: '',
             callback: function () { },
             filter: function () { }
         }, options);
@@ -206,6 +207,7 @@
     }
     // 展现函数
     pjax.showFn = function (showType, container, data, fn, isCached) {
+		//data = $(data).find("#pjax-content").html();
         var fx = null;
         if (typeof showType === 'function') {
             fx = showType;
@@ -242,11 +244,18 @@
             data = $(data).find(pjax.html).html();
         }
         if ((data || '').indexOf('<html') != -1) {
-            pjax.options.callback && pjax.options.callback.call(pjax.options.element, {
+			debugger;
+			var _container = pjax.options._container;
+			if(_container.length>0){
+				data = $(data).find(_container).html();
+			}
+			else{
+				pjax.options.callback && pjax.options.callback.call(pjax.options.element, {
                 type: 'error'
-            });
-            location.href = pjax.options.url;
-            return false;
+				});
+				location.href = pjax.options.url;
+				return false;
+			}
         }
         var title = pjax.options.title || "", el;
         if (title == "" && pjax.options.element) {
@@ -265,6 +274,7 @@
         document.title = title;
         pjax.state = {
             container: pjax.options.container,
+			_container: pjax.options._container,
             timeout: pjax.options.timeout,
             cache: pjax.options.cache,
             storage: pjax.options.storage,
@@ -384,9 +394,18 @@
     $.pjax = pjax;
     $.pjax.util = Util;
 
+/*
     // extra
     if ($.inArray('state', $.event.props) < 0) {
-        $.event.props.push('state')
+		console.log($.event.props);
+        $.event.props.push('state');
     }
+*/	
+	
+if ($.event.props && $.inArray('state', $.event.props) < 0) {
+  $.event.props.push('state')
+} else if (!('state' in $.Event.prototype)) {
+  $.event.addProp('state')
+}
 
 })(jQuery);
