@@ -155,7 +155,7 @@
 
     // 默认选项
     pjax.defaultOptions = {
-        timeout: 4000,
+        timeout: 10000,
         element: null,
         cache: 24 * 3600, // 缓存时间, 0为不缓存, 单位为秒
         storage: true, // 是否使用localstorage将数据保存到本地
@@ -243,35 +243,33 @@
         if (pjax.html) {
             data = $(data).find(pjax.html).html();
         }
-        if ((data || '').indexOf('<html') != -1) {
-			debugger;
-			var _container = pjax.options._container;
-			if(_container.length>0){
-				data = $(data).find(_container).html();
+		if(isCached !== true){
+			var title = pjax.options.title || "", el;
+			if (title == "" && pjax.options.element) {
+				el = $(pjax.options.element);
+				title = el.attr('title') || el.text();
 			}
-			else{
+			var matches = data.match(/<title>(.*?)<\/title>/);
+			if (matches) {
+				title = matches[1];
+			}
+			if (title) {
+				if (title.indexOf(pjax.options.titleSuffix) == -1) {
+					title += pjax.options.titleSuffix;
+				}
+			}
+			document.title = title;
+			if(pjax.options._container.length>0){
+				data = $(data).find(pjax.options._container).html();
+			}
+			if ((data || '').indexOf('<html') != -1) {
 				pjax.options.callback && pjax.options.callback.call(pjax.options.element, {
-                type: 'error'
+				type: 'error'
 				});
 				location.href = pjax.options.url;
 				return false;
 			}
-        }
-        var title = pjax.options.title || "", el;
-        if (title == "" && pjax.options.element) {
-            el = $(pjax.options.element);
-            title = el.attr('title') || el.text();
-        }
-        var matches = data.match(/<title>(.*?)<\/title>/);
-        if (matches) {
-            title = matches[1];
-        }
-        if (title) {
-            if (title.indexOf(pjax.options.titleSuffix) == -1) {
-                title += pjax.options.titleSuffix;
-            }
-        }
-        document.title = title;
+		}
         pjax.state = {
             container: pjax.options.container,
 			_container: pjax.options._container,
